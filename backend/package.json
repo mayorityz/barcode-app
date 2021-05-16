@@ -1,0 +1,17 @@
+{
+  "name": "scanner-backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Abiodun Mayowa <mayority11@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.9",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}
