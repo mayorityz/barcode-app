@@ -12,6 +12,10 @@ const recordSchema = new DB.Schema({
   latitude: String,
   longitude: String,
   address: String,
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Records = DB.model("records", recordSchema);

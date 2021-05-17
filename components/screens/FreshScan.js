@@ -4,11 +4,12 @@ import {
   Text,
   StyleSheet,
   KeyboardAvoidingView,
-  Button,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import axios from "axios";
 
 function FreshScan() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -30,14 +31,14 @@ function FreshScan() {
   const [latiitude, setLatiitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
+  const [loader, setLoader] = useState(null);
+
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
   }, []);
-
-  const createNewRecord = () => {};
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
@@ -54,6 +55,30 @@ function FreshScan() {
   const reScan = () => {
     setScanned(false);
     setBarCodeNum(null);
+  };
+
+  const saveNewRecord = async () => {
+    const data_ = {
+      barcode: barcodeNum,
+      model,
+      brand,
+      serial,
+      outlet,
+      chiller,
+      phone,
+      address,
+      owner,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "http://192.168.43.94:4500/addition/",
+        data_
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -199,10 +224,7 @@ function FreshScan() {
                 )}
               </View>
               <View>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={createNewRecord}
-                >
+                <TouchableOpacity style={styles.button} onPress={saveNewRecord}>
                   <Text style={{ color: "#fff" }}>SUBMIT NEW RECORD</Text>
                 </TouchableOpacity>
               </View>

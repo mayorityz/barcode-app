@@ -24,6 +24,58 @@ app.use((req, res, next) => {
 
 app.use("/addition", (req, res, next) => {
   console.log(req.body);
+  const {
+    address,
+    barcode,
+    brand,
+    chiller,
+    model,
+    outlet,
+    owner,
+    phone,
+    serial,
+  } = req.body;
+
+  try {
+    const saveNew = new NewRecordModule({
+      barcode,
+      model,
+      brand,
+      serial,
+      outlet,
+      owner,
+      phone,
+      chiller,
+      address,
+    });
+
+    saveNew.save((er, docx) => {
+      if (er) {
+        console.log(er);
+        res.status(200).json({
+          status: "failed",
+          message: "An Error Occured, please try again!",
+        });
+      } else {
+        res.status(200).json({
+          status: "success",
+          message: " New Record Created Successfully!!!",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.use("/fetchrecord", (req, res, next) => {
+  const { barcode } = req.body;
+  NewRecordModule.findOne({ barcode }, (er, docx) => {
+    if (er) {
+      return res.status(200).json({ status: "failed", data: [] });
+    }
+    res.status(200).json({ status: "success", data: docx });
+  });
 });
 
 app.use((req, res, next) => {
