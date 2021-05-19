@@ -70,12 +70,18 @@ app.use("/addition", (req, res, next) => {
 
 app.use("/fetchrecord", (req, res, next) => {
   const { barcode } = req.body;
-  NewRecordModule.findOne({ barcode }, (er, docx) => {
-    if (er) {
-      return res.status(200).json({ status: "failed", data: [] });
-    }
-    res.status(200).json({ status: "success", data: docx });
-  });
+  console.log(barcode);
+  try {
+    NewRecordModule.findOne({ barcode }, (er, docx) => {
+      if (er) {
+        res.status(200).json({ status: "failed", data: [] });
+      } else {
+        res.status(200).json({ status: "success", data: docx });
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 app.use((req, res, next) => {

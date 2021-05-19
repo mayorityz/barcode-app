@@ -7,9 +7,11 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import axios from "axios";
+import GlobalCss from "../GlobalCss";
 
 function FreshScan() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -83,155 +85,158 @@ function FreshScan() {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior="height"
-        keyboardVerticalOffset={100000}
-      >
-        <Text style={styles.h3}>
-          {barcodeNum ? barcodeNum : "Scan A BarCode!"}
-        </Text>
-        {!barcodeNum ? (
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={StyleSheet.absoluteFillObject}
-          />
-        ) : (
-          <View style={styles.form}>
-            <Text
-              style={{ textAlign: "center", fontSize: 19, fontWeight: "bold" }}
-            >
-              CREATE NEW RECORD.
-            </Text>
-            <View style={styles.formControl}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>BarCode Number:</Text>
+      <Text style={GlobalCss.headerBanner}>
+        {barcodeNum ? barcodeNum : "Scan A BarCode"}
+      </Text>
+      {!barcodeNum ? (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+      ) : (
+        <ScrollView>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 11,
+              fontWeight: "bold",
+            }}
+          >
+            CREATE NEW RECORD.
+          </Text>
+          <View style={GlobalCss.form}>
+            <View style={GlobalCss.formGroup}>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>BarCode Number:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   defaultValue={barcodeNum}
                   editable={false}
                 />
               </View>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Model Number:</Text>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Model Number:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={model}
                   onChangeText={(text) => setModel(text)}
                 />
               </View>
             </View>
 
-            <View style={styles.formControl}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Brand Number:</Text>
+            <View style={GlobalCss.formGroup}>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Brand Number:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={brand}
                   onChangeText={(text) => setBrand(text)}
                 />
               </View>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Serial Number:</Text>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Serial Number:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={serial}
                   onChangeText={(text) => setSerial(text)}
                 />
               </View>
             </View>
 
-            <View style={styles.formControl}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Outlet Name:</Text>
+            <View style={GlobalCss.formGroup}>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Outlet Name:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={outlet}
                   onChangeText={(text) => setOutLet(text)}
                 />
               </View>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Owner's Name:</Text>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Owner's Name:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={owner}
                   onChangeText={(text) => setOwner(text)}
                 />
               </View>
             </View>
 
-            <View style={styles.formControl}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Phone Number:</Text>
+            <View style={GlobalCss.formGroup}>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Phone Number:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={phone}
                   onChangeText={(text) => setPhone(text)}
                 />
               </View>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Outlet Address:</Text>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Outlet Address:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={address}
                   onChangeText={(text) => setAddress(text)}
                 />
               </View>
             </View>
 
-            <View style={styles.formControl}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Chiller Contractor:</Text>
+            <View style={GlobalCss.formGroup}>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Chiller Contractor:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={chiller}
                   onChangeText={(text) => setChiller(text)}
                 />
               </View>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Latitude:</Text>
-                <TextInput style={styles.input} defaultValue={barcodeNum} />
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Latitude:</Text>
+                <TextInput style={GlobalCss.field} defaultValue={barcodeNum} />
               </View>
             </View>
 
-            <View style={styles.formControl}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Longitude:</Text>
+            <View style={GlobalCss.formGroup}>
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Longitude:</Text>
                 <TextInput
-                  style={styles.input}
+                  style={GlobalCss.field}
                   value={chiller}
                   onChangeText={(text) => setChiller(text)}
                 />
               </View>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Latitude:</Text>
-                <TextInput style={styles.input} defaultValue={barcodeNum} />
+              <View style={GlobalCss.input}>
+                <Text style={GlobalCss.label}>Latitude:</Text>
+                <TextInput style={GlobalCss.field} defaultValue={barcodeNum} />
               </View>
             </View>
 
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
-              }}
-            >
+            <View style={GlobalCss.formGroup}>
               <View>
                 {scanned && (
-                  <TouchableOpacity style={styles.button} onPress={reScan}>
+                  <TouchableOpacity
+                    style={{
+                      ...GlobalCss.button,
+                      backgroundColor: "#09BC8A",
+                    }}
+                    onPress={reScan}
+                  >
                     <Text style={{ color: "#fff" }}>TAP TO RESCAN </Text>
                   </TouchableOpacity>
                 )}
               </View>
               <View>
-                <TouchableOpacity style={styles.button} onPress={saveNewRecord}>
+                <TouchableOpacity
+                  style={GlobalCss.button}
+                  onPress={saveNewRecord}
+                >
                   <Text style={{ color: "#fff" }}>SUBMIT NEW RECORD</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-        )}
-      </KeyboardAvoidingView>
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -240,10 +245,10 @@ export default FreshScan;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f89939",
+    backgroundColor: "#EC7357",
     flex: 1,
-    marginTop: 29,
-    padding: 10,
+    marginTop: 0,
+    // padding: 10,
   },
   h3: {
     fontSize: 30,
