@@ -5,6 +5,7 @@ const Port = process.env.PORT || 4500;
 // const cookieParser = require("cookie-parser");
 const DATABASE = require("./helpers/Database");
 const NewRecordModule = require("./modules/record.module");
+const UserModule = require("./modules/user.module");
 
 var origin_ = process.env.NODE_ENV
   ? "https://yoruba-community.herokuapp.com/"
@@ -83,6 +84,52 @@ app.use("/fetchrecord", (req, res, next) => {
     console.log(error.message);
   }
 });
+
+app.use("/login", (req, res, next) => {
+  const { username, password } = req.body;
+  try {
+    UserModule.findOne({ username, password }, (err, response) => {
+      console.log(response);
+      if (err)
+        res.status(200).json({ status: "failed", msg: "Invalid Credentials" });
+      else {
+        if (response === null)
+          res
+            .status(200)
+            .json({ status: "failed", msg: "Invalid Credentials" });
+        else
+          res
+            .status(200)
+            .json({ status: "success", msg: "Login Successfully" });
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.use(
+  (createuser = (req, res, next) => {
+    const { username, password } = req.body;
+    try {
+      let newUser = new UserModule({ username, password });
+      newUser.save((err, docx) => {
+        if (err) {
+          res
+            .status(200)
+            .json({ status: "failed", msg: "Error Occured, Try again" });
+          return;
+        }
+
+        res
+          .status(200)
+          .json({ status: "success", msg: "User Created Successfully" });
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  })
+);
 
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");

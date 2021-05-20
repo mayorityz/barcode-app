@@ -76,4 +76,17 @@ export default StyleSheet.create({
     textAlign: "center",
     marginTop: 50,
   },
+  errorMsg: {
+    backgroundColor: "red",
+    height: 30,
+    width: "100%",
+    marginTop: 10,
+    textAlign: "center",
+    paddingTop: 5,
+    paddingBottom: 5,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#fff",
+  },
 });

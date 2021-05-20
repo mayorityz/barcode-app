@@ -10,7 +10,7 @@ import GlobalCss from "./../GlobalCss";
 
 const ViewRecord = ({ data, newscan }) => {
   return (
-    <>
+    <ScrollView>
       <Text style={GlobalCss.h1}>record : {data.barcode}</Text>
       <View style={GlobalCss.form}>
         <View style={GlobalCss.formGroup}>
@@ -120,7 +120,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
