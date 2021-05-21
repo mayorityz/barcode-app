@@ -27,7 +27,7 @@ function ExistingScan() {
   const handleBarCodeScanned = async ({ type, data }) => {
     try {
       const response = await axios.post(
-        "http://192.168.43.94:4500/fetchrecord/",
+        "https://scanner-app-1.herokuapp.com/fetchrecord",
         {
           barcode: data,
         }
@@ -49,6 +49,7 @@ function ExistingScan() {
       }
     } catch (error) {
       console.log(error.message);
+      setNotification({ status: 1, message: error.message, data: data_.data });
     }
   };
 

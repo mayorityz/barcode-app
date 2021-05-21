@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://192.168.43.94:4500";
+const URL = "https://scanner-app-1.herokuapp.com";
 
 export const login = async (params) => {
   try {
