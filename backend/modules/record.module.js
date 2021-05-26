@@ -12,6 +12,13 @@ const recordSchema = new DB.Schema({
   latitude: String,
   longitude: String,
   address: String,
+  salesArea: String,
+  assetType: String,
+  assetName: String,
+  brandName: String,
+  channel: String,
+  outletCode: String,
+  tier: String,
   date: {
     type: Date,
     default: Date.now,

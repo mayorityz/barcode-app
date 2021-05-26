@@ -12,6 +12,13 @@ exports.addition = (req, res) => {
     owner,
     phone,
     serial,
+    salesArea,
+    assetType,
+    assetName,
+    brandName,
+    channel,
+    outletCode,
+    tier,
   } = req.body;
 
   try {
@@ -25,6 +32,13 @@ exports.addition = (req, res) => {
       phone,
       chiller,
       address,
+      salesArea,
+      assetType,
+      assetName,
+      brandName,
+      channel,
+      outletCode,
+      tier,
     });
 
     saveNew.save((er, docx) => {
@@ -59,5 +73,19 @@ exports.fetchrecord = (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+exports.fetchAll = (req, res) => {
+  try {
+    NewRecordModule.find({}, (er, docx) => {
+      if (er) {
+        return res.status(400).send(er);
+      }
+
+      res.status(200).json({ document: docx });
+    });
+  } catch (err) {
+    console.log(err.message);
   }
 };

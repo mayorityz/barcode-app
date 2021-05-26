@@ -7,6 +7,10 @@ const userSchema = new DB.Schema({
     type: Date,
     default: Date.now,
   },
+  status : {
+  	default : 0,
+  	type : String,
+  }
 });
 
 const Users = DB.model("users", userSchema);

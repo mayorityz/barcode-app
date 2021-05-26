@@ -25,10 +25,11 @@ const Login = ({ navigation }) => {
       const access = await login({ username, password });
       console.log(access);
       setNotification(access.msg);
-      setUsername(null);
-      setPassword(null);
+
       if (access.status === "success") {
         await AsyncStorage.setItem("username", username);
+        setUsername(null);
+        setPassword(null);
         navigation.navigate("Scan");
       }
     } catch (error) {

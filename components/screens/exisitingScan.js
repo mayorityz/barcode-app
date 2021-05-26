@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   StatusBar,
+  Vibration,
 } from "react-native";
 
 import { BarCodeScanner } from "expo-barcode-scanner";
 import axios from "axios";
 import GlobalCss from "./../GlobalCss.js";
 import ViewRecord from "./ViewRecord";
+import { getRecord } from "./../API";
 
 function ExistingScan() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -25,36 +27,57 @@ function ExistingScan() {
   });
 
   const handleBarCodeScanned = async ({ type, data }) => {
-    try {
-      const response = await axios.post(
-        "https://scanner-app-1.herokuapp.com/fetchrecord",
-        {
-          barcode: data,
-        }
-      );
-      const data_ = response.data;
+    Vibration.vibrate([1000, 2000, 1000]);
+    // add a preloader here
 
-      if (data_.status === "success") {
-        if (!data_.data) {
-          setNotification({
-            status: 0,
-            message: "No Records Match",
-            data: data_.data,
-          });
-          setToggle(!toggle);
-        } else {
-          setNotification({ status: 1, message: "", data: data_.data });
-          setBarCodeNum(true);
-        }
+    const data_ = await getRecord({
+      barcode: data,
+    });
+
+    if (data_.status === "success") {
+      if (!data_.data) {
+        setNotification({
+          status: 0,
+          message: "No Records Match",
+          data: data_.data,
+        });
+        setToggle(!toggle);
+      } else {
+        setNotification({ status: 1, message: "", data: data_.data });
+        setBarCodeNum(true);
       }
-    } catch (error) {
-      console.log(error.message);
-      setNotification({ status: 1, message: error.message, data: data_.data });
     }
+
+    // try {
+    //   const response = await axios.post(
+    //     "https://scanner-app-1.herokuapp.com/fetchrecord",
+    //     {
+    //       barcode: data,
+    //     }
+    //   );
+    //   const data_ = response.data;
+
+    //   if (data_.status === "success") {
+    //     if (!data_.data) {
+    //       setNotification({
+    //         status: 0,
+    //         message: "No Records Match",
+    //         data: data_.data,
+    //       });
+    //       setToggle(!toggle);
+    //     } else {
+    //       setNotification({ status: 1, message: "", data: data_.data });
+    //       setBarCodeNum(true);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error.message);
+    //   setNotification({ status: 1, message: error.message, data: data_.data });
+    // }
   };
 
   return (
-    <KeyboardAvoidingView style={GlobalCss.container} behavior="height">
+    <View style={GlobalCss.container}>
       <StatusBar backgroundColor="#EC7357" animated={true} />
       {toggle ? (
         barcodeNum ? (
@@ -88,7 +111,7 @@ function ExistingScan() {
           <Text style={GlobalCss.h1}>{notification.message}</Text>
         </>
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

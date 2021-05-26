@@ -25,6 +25,7 @@ exports.login = (req, res) => {
 
 exports.createuser = (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body)
   try {
     let newUser = new UserModule({ username, password });
     newUser.save((err, docx) => {
@@ -43,3 +44,19 @@ exports.createuser = (req, res) => {
     console.log(error.message);
   }
 };
+
+exports.getUsers = (req, res)=>{
+  try{
+    UserModule.find({}, (er, response)=>{
+      if(er){
+       return res.status(400).send("error occured!"+ er);
+      }
+
+      res.status(200).json({data : response});
+
+    })
+  }
+  catch(err){
+    console.log(err.message);
+  }
+}
