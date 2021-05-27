@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 
 app.use(require("./routes/records.route"));
 app.use(require("./routes/users.route"));
+app.use(require("./routes/logs.route"));
 
 app.use("/", (req, res, next) => {
   res.send("home page");

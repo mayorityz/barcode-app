@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -8,11 +8,31 @@ import {
 } from "react-native";
 import GlobalCss from "./../GlobalCss";
 import { Picker } from "@react-native-picker/picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Logs } from "../API";
 
 const ViewRecord = ({ data, newscan }) => {
   const [selectedLanguage, setSelectedLanguage] = useState();
   const [secondary, setSecondary] = useState();
+
   const [status, setStatus] = useState(false);
+
+  const [model, setModel] = useState(null);
+  const [brand, setBrand] = useState(null);
+  const [serial, setSerial] = useState(null);
+  const [outlet, setOutLet] = useState(null);
+  const [chiller, setChiller] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [owner, setOwner] = useState(null);
+
+  const [salesArea, setSalesArea] = useState(null);
+  const [assetType, setAssetType] = useState(null);
+  const [assetName, setAssetName] = useState(null);
+  const [brandName, setBrandName] = useState(null);
+  const [channel, setChannel] = useState(null);
+  const [outletCode, setOutletCode] = useState(null);
+  const [tier, setTier] = useState(null);
 
   const primaryOption = (value) => {
     if (value === "Repair") {
@@ -25,9 +45,63 @@ const ViewRecord = ({ data, newscan }) => {
     setSelectedLanguage(value);
   };
 
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("username");
+      if (value !== null) value;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const submitLog = async () => {
+    console.log("saving log!!!");
+    const data_ = {
+      model,
+      brand,
+      serial,
+      outlet,
+      chiller,
+      phone,
+      address,
+      owner,
+      salesArea,
+      assetType,
+      assetName,
+      brandName,
+      channel,
+      outletCode,
+      tier,
+      primary: selectedLanguage,
+      secondary,
+    };
+    const response = await Logs(data_);
+    console.log(response);
+  };
+
+  useEffect(() => {
+    setModel(data.model);
+    setAddress(data.address);
+    setAssetName(data.assetName);
+    setAssetType(data.assetType);
+    setBrand(data.brand);
+    setBrandName(data.brandName);
+    setOutLet(data.outlet);
+    setOutletCode(data.outletCode);
+    setOwner(data.owner);
+    setPhone(data.phone);
+    setSalesArea(data.salesArea);
+    setSerial(data.serial);
+    setTier(data.tier);
+    setChiller(data.chiller);
+    setChannel(data.channel);
+  }, [data]);
+
   return (
     <>
-      <Text style={GlobalCss.h1}>BARCODE REF. : {data.barcode}</Text>
+      <Text style={{ ...GlobalCss.h1, color: "#fff", fontSize: 14 }}>
+        BARCODE REF. : {data.barcode}
+      </Text>
       <ScrollView>
         <View style={GlobalCss.form}>
           <View style={GlobalCss.formGroup}>
@@ -35,8 +109,9 @@ const ViewRecord = ({ data, newscan }) => {
               <Text style={GlobalCss.label}>Contractor :</Text>
               <TextInput
                 placeholder="Chiller Contract"
-                defaultValue={data.chiller}
+                value={chiller}
                 style={GlobalCss.field}
+                onChangeText={(text) => setChiller(text)}
               />
             </View>
             <View style={GlobalCss.input}>
@@ -44,7 +119,8 @@ const ViewRecord = ({ data, newscan }) => {
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Model Number"
-                defaultValue={data.model}
+                value={model}
+                onChangeText={(text) => setModel(text)}
               />
             </View>
           </View>
@@ -53,16 +129,18 @@ const ViewRecord = ({ data, newscan }) => {
               <Text style={GlobalCss.label}>Brand :</Text>
               <TextInput
                 placeholder="Brand"
-                defaultValue={data.brand}
+                value={brand}
                 style={GlobalCss.field}
+                onChangeText={(text) => setBrand(text)}
               />
             </View>
             <View style={GlobalCss.input}>
               <Text style={GlobalCss.label}>Serial Number :</Text>
               <TextInput
                 style={GlobalCss.field}
-                defaultValue={data.serial}
+                value={serial}
                 placeholder="Serial Number"
+                onChangeText={(text) => setSerial(text)}
               />
             </View>
           </View>
@@ -72,7 +150,8 @@ const ViewRecord = ({ data, newscan }) => {
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Outlet's Name"
-                defaultValue={data.outlet}
+                value={outlet}
+                onChangeText={(text) => setOutLet(text)}
               />
             </View>
             <View style={GlobalCss.input}>
@@ -80,7 +159,8 @@ const ViewRecord = ({ data, newscan }) => {
               <TextInput
                 placeholder="Owner"
                 style={GlobalCss.field}
-                defaultValue={data.owner}
+                value={owner}
+                onChangeText={(text) => setOwner(text)}
               />
             </View>
           </View>
@@ -90,15 +170,77 @@ const ViewRecord = ({ data, newscan }) => {
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Phone"
-                defaultValue={data.phone}
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
               />
             </View>
             <View style={GlobalCss.input}>
               <Text style={GlobalCss.label}>Outlet Address :</Text>
               <TextInput
                 placeholder="Outlet Address"
-                defaultValue={data.address}
+                value={address}
                 style={GlobalCss.field}
+                onChangeText={(text) => setAddress(text)}
+              />
+            </View>
+          </View>
+          <View style={GlobalCss.formGroup}>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Asset Name :</Text>
+              <TextInput
+                style={GlobalCss.field}
+                placeholder="Asset Name"
+                value={assetName}
+                onChangeText={(text) => setAssetName(text)}
+              />
+            </View>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Asset Type:</Text>
+              <TextInput
+                placeholder="Asset Type"
+                value={assetType}
+                style={GlobalCss.field}
+                onChangeText={(text) => setAssetType(text)}
+              />
+            </View>
+          </View>
+          <View style={GlobalCss.formGroup}>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Channel :</Text>
+              <TextInput
+                style={GlobalCss.field}
+                placeholder="Channel"
+                value={channel}
+                onChangeText={(text) => setChannel(text)}
+              />
+            </View>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Outlet Code :</Text>
+              <TextInput
+                placeholder="Outlet Code"
+                value={outletCode}
+                onChangeText={(text) => setOutletCode(text)}
+                style={GlobalCss.field}
+              />
+            </View>
+          </View>
+          <View style={GlobalCss.formGroup}>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Sales Area :</Text>
+              <TextInput
+                style={GlobalCss.field}
+                placeholder="Sales Area"
+                value={salesArea}
+                onChangeText={(text) => setSalesArea(text)}
+              />
+            </View>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Brand Name:</Text>
+              <TextInput
+                placeholder="Brand Name"
+                value={brandName}
+                style={GlobalCss.field}
+                onChangeText={(text) => setBrandName(text)}
               />
             </View>
           </View>
@@ -112,6 +254,18 @@ const ViewRecord = ({ data, newscan }) => {
               <TextInput placeholder="Longitude" style={GlobalCss.field} />
             </View>
           </View>
+          <View style={GlobalCss.formGroup}>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Tire :</Text>
+              <TextInput
+                placeholder="Tier"
+                style={GlobalCss.field}
+                value={tier}
+                onChangeText={(text) => setTier(text)}
+              />
+            </View>
+          </View>
+
           <Text style={GlobalCss.label}>Activity Log.</Text>
           <View style={{ padding: 10, backgroundColor: "#f6f6f6" }}>
             <Picker
@@ -135,14 +289,12 @@ const ViewRecord = ({ data, newscan }) => {
               enabled={status}
             >
               <Picker.Item label="-- Select Secondary Option --" value="" />
-              <Picker.Item
-                label="Electrical wiring"
-                value="Electrical wiring"
-              />
+
               <Picker.Item
                 label="Capacitor/ starting device"
                 value="Capacitor/ starting device"
               />
+              <Picker.Item label="Electrical" value="Electrical" />
               <Picker.Item
                 label="Lighting replaced"
                 value="Lighting replaced"
@@ -174,7 +326,7 @@ const ViewRecord = ({ data, newscan }) => {
               </TouchableOpacity>
             </View>
             <View style={GlobalCss.input}>
-              <TouchableOpacity style={GlobalCss.button}>
+              <TouchableOpacity style={GlobalCss.button} onPress={submitLog}>
                 <Text style={{ color: "#fff", fontWeight: "bold" }}>
                   UPDATE
                 </Text>

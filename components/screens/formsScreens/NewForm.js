@@ -30,8 +30,6 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
   const [outletCode, setOutletCode] = useState(null);
   const [tier, setTier] = useState(null);
 
-  const [contractor, setContractor] = useState(null);
-
   // coordinates
   const [latiitude, setLatiitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -44,6 +42,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
   const saveNewRecord = async () => {
     console.log("saving new data");
     setNotification({ status: "success", message: "Please Wait!!!" });
+
     const data_ = {
       barcode: barcodeNum,
       model,
@@ -89,31 +88,35 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
 
     const response = await newRecord(data_);
     console.log(response);
-    if (response.status === "success") {
-      setNotification({
-        status: "success",
-        message: response.message,
-      });
-      setModal(null);
-      setBrand(null);
-      setSerial(null);
-      setOutLet(null);
-      setChiller(null);
-      setPhone(null);
-      setAddress(null);
-      setOwner(null);
-      setSalesArea(null);
-      setAssetName(null);
-      setAssetType(null);
-      setBrandName(null);
-      setChannel(null);
-      setOutLetCode(null);
-      setTier(null);
-    } else {
-      setNotification({
-        status: "error",
-        message: response.message,
-      });
+    try {
+      if (response.status === "success") {
+        setNotification({
+          status: "success",
+          message: response.message,
+        });
+        setModel(null);
+        setBrand(null);
+        setSerial(null);
+        setOutLet(null);
+        setChiller(null);
+        setPhone(null);
+        setAddress(null);
+        setOwner(null);
+        setSalesArea(null);
+        setAssetName(null);
+        setAssetType(null);
+        setBrandName(null);
+        setChannel(null);
+        setOutLetCode(null);
+        setTier(null);
+      } else {
+        setNotification({
+          status: "error",
+          message: response.message,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
