@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import GlobalCss from "./../GlobalCss";
 import { Picker } from "@react-native-picker/picker";
@@ -16,6 +17,7 @@ const ViewRecord = ({ data, newscan }) => {
   const [secondary, setSecondary] = useState();
 
   const [status, setStatus] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const [model, setModel] = useState(null);
   const [brand, setBrand] = useState(null);
@@ -56,6 +58,34 @@ const ViewRecord = ({ data, newscan }) => {
 
   const submitLog = async () => {
     console.log("saving log!!!");
+
+    if (
+      !model ||
+      !brand ||
+      !serial ||
+      !outlet ||
+      !chiller ||
+      !phone ||
+      !address ||
+      !owner ||
+      !salesArea ||
+      !assetType ||
+      !assetName ||
+      !brandName ||
+      !channel ||
+      !outletCode ||
+      !tier
+    ) {
+      alert("All Fields Must Be Filled!!!");
+      return;
+    }
+
+    if (!selectedLanguage) {
+      alert("You Must Add A Log");
+      return;
+    }
+
+    setLoading(true);
     const data_ = {
       model,
       brand,
@@ -75,8 +105,21 @@ const ViewRecord = ({ data, newscan }) => {
       primary: selectedLanguage,
       secondary,
     };
-    const response = await Logs(data_);
-    console.log(response);
+    try {
+      const data = await Logs(data_);
+
+      if (data.status === "success") {
+        setLoading(false);
+        alert("Data Uploaded Successfully!");
+      } else {
+        setLoading(false);
+        alert("DB ERROR! PLEASE TRY AGAIN!!");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      alert("Network Error! Please Try Again!");
+    }
   };
 
   useEffect(() => {
@@ -96,6 +139,24 @@ const ViewRecord = ({ data, newscan }) => {
     setChiller(data.chiller);
     setChannel(data.channel);
   }, [data]);
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#fff",
+          flexDirection: "column",
+          padding: 19,
+        }}
+      >
+        <Text>Updating Record Data! Please Wait!!</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -274,6 +335,7 @@ const ViewRecord = ({ data, newscan }) => {
               mode="dialog"
               style={GlobalCss.pickerStyle}
             >
+              <Picker.Item label="=== Select A Log ===" value="" />
               <Picker.Item
                 label="Routine Maintenance/Servicing"
                 value="Routine Maintenance/Servicing"

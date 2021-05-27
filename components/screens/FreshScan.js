@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
 import { BarCodeScanner } from "expo-barcode-scanner";
-import axios from "axios";
 import GlobalCss from "../GlobalCss";
 import NewForm from "./formsScreens/NewForm";
 
@@ -32,10 +23,34 @@ function FreshScan() {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return (
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+          backgroundColor: "green",
+        }}
+      >
+        <Text>Check For Camera Permissions.</Text>
+      </View>
+    );
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+          backgroundColor: "green",
+        }}
+      >
+        <Text>No access to camera</Text>
+      </View>
+    );
   }
 
   const reScan = () => {

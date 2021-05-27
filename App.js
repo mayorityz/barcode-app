@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, Platform } from "react-native";
+import { ActivityIndicator, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App() {
   const Stack = createStackNavigator();
   const [isLoggedin, setLoggedStatus] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getData();
@@ -22,10 +23,22 @@ export default function App() {
       if (value !== null) {
         setLoggedStatus(true);
       } else setLoggedStatus(false);
+
+      setLoading(false);
     } catch (e) {
       // error reading value
     }
   };
+
+  if (loading) {
+    return (
+      <View
+        style={{ flex: 1, backgroundColor: "#fff", justifyContent: "center" }}
+      >
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer>
