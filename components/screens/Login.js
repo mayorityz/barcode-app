@@ -39,7 +39,12 @@ const Login = ({ navigation }) => {
   return (
     <>
       <KeyboardAvoidingView style={GlobalCss.container}>
-        <View style={{ ...GlobalCss.form, padding: 30 }}>
+        <View
+          style={{
+            ...GlobalCss.form,
+            padding: 30,
+          }}
+        >
           <Text style={{ ...GlobalCss.h1, textAlign: "center" }}>
             User Login
           </Text>

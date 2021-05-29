@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import {
   View,
   Text,
-  StyleSheet,
-  KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import GlobalCss from "../../GlobalCss";
 import { newRecord } from "../../API";
+import * as Location from "expo-location";
 
 const NewForm = ({ barcodeNum, scanned, rescan }) => {
   const [model, setModel] = useState(null);
@@ -31,8 +31,11 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
   const [tier, setTier] = useState(null);
 
   // coordinates
-  const [latiitude, setLatiitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+
+  // indicator
+  const [isIndicating, setIndicating] = useState(false);
 
   //   notification
   const [notification, setNotification] = useState(null);
@@ -60,6 +63,8 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
       channel,
       outletCode,
       tier,
+      longitude,
+      latitude,
     };
 
     if (
@@ -86,8 +91,15 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
       return;
     }
 
+    if (!longitude || !latitude) {
+      setNotification({
+        status: "error",
+        message: "Click Add Location , To Add Current Location!",
+      });
+      return;
+    }
+
     const response = await newRecord(data_);
-    console.log(response);
     try {
       if (response.status === "success") {
         setNotification({
@@ -107,7 +119,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
         setAssetType(null);
         setBrandName(null);
         setChannel(null);
-        setOutLetCode(null);
+        setOutletCode(null);
         setTier(null);
       } else {
         setNotification({
@@ -119,6 +131,47 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
       console.log(error.message);
     }
   };
+
+  const getGeoLoaction = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    setIndicating(true);
+    if (status !== "granted") {
+      setIndicating(false);
+      alert("Permission to access location was denied");
+      return;
+    }
+    try {
+      let location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      setLatitude(latitude);
+      setLongitude(longitude);
+    } catch (error) {
+      alert(error.message);
+    }
+    setIndicating(false);
+  };
+
+  useEffect(() => {
+    setLatitude(null);
+    setLongitude(null);
+  }, [barcodeNum]);
+
+  if (isIndicating) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          height: 340,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Text>Getting Your Location...</Text>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 
   return (
     <ScrollView>
@@ -286,15 +339,13 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
             <Text style={GlobalCss.label}>Longitude:</Text>
-            <TextInput
-              style={GlobalCss.field}
-              value={chiller}
-              onChangeText={(text) => setChiller(text)}
-            />
+            <Text style={{ fontSize: 30 }}>
+              {longitude || "Click Location"}
+            </Text>
           </View>
           <View style={GlobalCss.input}>
             <Text style={GlobalCss.label}>Latitude:</Text>
-            <TextInput style={GlobalCss.field} defaultValue={barcodeNum} />
+            <Text style={{ fontSize: 30 }}>{latitude || "Click Location"}</Text>
           </View>
         </View>
         {notification &&
@@ -329,8 +380,8 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity style={GlobalCss.button}>
-              <Text>Add Location</Text>
+            <TouchableOpacity style={GlobalCss.button} onPress={getGeoLoaction}>
+              <Text style={{ color: "#fff" }}>ADD LOCATION</Text>
             </TouchableOpacity>
           </View>
         </View>

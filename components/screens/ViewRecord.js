@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import GlobalCss from "./../GlobalCss";
+import * as Location from "expo-location";
 import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Logs } from "../API";
@@ -35,6 +36,9 @@ const ViewRecord = ({ data, newscan }) => {
   const [channel, setChannel] = useState(null);
   const [outletCode, setOutletCode] = useState(null);
   const [tier, setTier] = useState(null);
+
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   const primaryOption = (value) => {
     if (value === "Repair") {
@@ -104,6 +108,8 @@ const ViewRecord = ({ data, newscan }) => {
       tier,
       primary: selectedLanguage,
       secondary,
+      longitude,
+      latitude,
     };
     try {
       const data = await Logs(data_);
@@ -138,6 +144,8 @@ const ViewRecord = ({ data, newscan }) => {
     setTier(data.tier);
     setChiller(data.chiller);
     setChannel(data.channel);
+    setLongitude(data.longitude);
+    setLatitude(data.latitude);
   }, [data]);
 
   if (isLoading) {
@@ -152,11 +160,30 @@ const ViewRecord = ({ data, newscan }) => {
           padding: 19,
         }}
       >
-        <Text>Updating Record Data! Please Wait!!</Text>
+        <Text>Updating! Please Wait!!</Text>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
+
+  const getGeoLoaction = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    setLoading(true);
+    if (status !== "granted") {
+      setLoading(false);
+      alert("Permission to access location was denied");
+      return;
+    }
+    try {
+      let location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      setLatitude(latitude);
+      setLongitude(longitude);
+    } catch (error) {
+      alert(error.message);
+    }
+    setLoading(false);
+  };
 
   return (
     <>
@@ -308,11 +335,15 @@ const ViewRecord = ({ data, newscan }) => {
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
               <Text style={GlobalCss.label}>Latitude :</Text>
-              <TextInput placeholder="Latitude" style={GlobalCss.field} />
+              <Text style={{ fontSize: 30 }}>
+                {latitude || "Click Location"}
+              </Text>
             </View>
             <View style={GlobalCss.input}>
               <Text style={GlobalCss.label}>Longitude :</Text>
-              <TextInput placeholder="Longitude" style={GlobalCss.field} />
+              <Text style={{ fontSize: 30 }}>
+                {longitude || "Click Location"}
+              </Text>
             </View>
           </View>
           <View style={GlobalCss.formGroup}>
@@ -374,6 +405,19 @@ const ViewRecord = ({ data, newscan }) => {
                 value="Condenser Fan Motor replaced"
               />
             </Picker>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={{
+                ...GlobalCss.button,
+                backgroundColor: "#09B",
+              }}
+              onPress={getGeoLoaction}
+            >
+              <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                UPDATE ASSET LOCATION
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={GlobalCss.formGroup}>

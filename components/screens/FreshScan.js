@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import { BarCodeScanner } from "expo-barcode-scanner";
+
 import GlobalCss from "../GlobalCss";
 import NewForm from "./formsScreens/NewForm";
 

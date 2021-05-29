@@ -43,17 +43,22 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isLoggedin ? (
+        {!isLoggedin && (
           <Stack.Screen
-            name="Scan"
-            component={UserScreen}
-            options={{
-              title: "SCANNER APP",
-            }}
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
           />
-        ) : (
-          <Stack.Screen name="Login" component={Login} />
         )}
+
+        <Stack.Screen
+          name="Scan"
+          component={UserScreen}
+          options={{
+            title: "SCANNER APP",
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -19,6 +19,8 @@ exports.addition = (req, res) => {
     channel,
     outletCode,
     tier,
+    longitude,
+    latitude,
   } = req.body;
 
   try {
@@ -39,6 +41,8 @@ exports.addition = (req, res) => {
       channel,
       outletCode,
       tier,
+      longitude,
+      latitude,
     });
 
     saveNew.save((er, docx) => {

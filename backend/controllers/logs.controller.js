@@ -20,6 +20,8 @@ exports.addLog = (req, res) => {
     tier,
     primary,
     secondary,
+    longitude,
+    latitude,
   } = req.body;
 
   try {
@@ -42,6 +44,8 @@ exports.addLog = (req, res) => {
       tier,
       primary,
       secondary,
+      longitude,
+      latitude,
     });
 
     insertRecord.save((er, response) => {
