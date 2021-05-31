@@ -19,10 +19,19 @@ const recordSchema = new DB.Schema({
   channel: String,
   outletCode: String,
   tier: String,
+  CT: String,
+  dataset: String,
+  q1: String,
+  q2: String,
+  q3: String,
+  q4: String,
   date: {
     type: Date,
     default: Date.now,
   },
+  VStatus: String,
+  remark: String,
+  tradeverif: String,
 });
 
 const Records = DB.model("records", recordSchema);

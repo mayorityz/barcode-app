@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "barcode-scanner-app",
-    "slug": "barcode-scanner-app",
+    "name": "sluseg",
+    "slug": "barcode-scanner",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f6f8f8"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "host.exp.scanner"
+      "package": "host.exp.scan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -5,5 +5,6 @@ const controller = require("./../controllers/records.controller");
 Router.post("/addition", controller.addition);
 Router.post("/fetchrecord", controller.fetchrecord);
 Router.get("/getAllRecords", controller.fetchAll);
+Router.get("/upload", controller.upload);
 
 module.exports = Router;
