@@ -1,11 +1,16 @@
 const NewRecordModule = require("./../modules/record.module");
+const { remover } = require("./../excel/index");
 const readXlsxFile = require("read-excel-file/node");
+
+// const excelPath = __dirname + "./../excel/sulseg.xlsx";
+const excelPath = "../backend/excel/sulseg.xlsx";
+// const path = "./../excel/sulseg.xlsx";
 
 exports.addition = (req, res) => {
   console.log(req.body);
   const {
     address,
-    barcode,
+    reference,
     brand,
     chiller,
     model,
@@ -26,7 +31,7 @@ exports.addition = (req, res) => {
 
   try {
     const saveNew = new NewRecordModule({
-      barcode,
+      reference,
       model,
       brand,
       serial,
@@ -69,7 +74,7 @@ exports.fetchrecord = (req, res) => {
   const { barcode } = req.body;
   console.log(barcode);
   try {
-    NewRecordModule.findOne({ barcode }, (er, docx) => {
+    NewRecordModule.findOne({ reference: barcode }, (er, docx) => {
       if (er) {
         res.status(200).json({ status: "failed", data: [] });
       } else {
@@ -108,76 +113,74 @@ exports.upload = (req, res) => {
       console.log(error.message);
     }
   };
-  try {
-    // File path.
-    readXlsxFile("../backend/excel/sulseg.xlsx").then((rows) => {
-      try {
-        const count = rows.length;
-        for (let index = 1; index <= count; index++) {
-          console.log("updating : ", index);
+  // File path.
+  readXlsxFile(excelPath).then((rows) => {
+    try {
+      const count = rows.length;
+      for (let index = 1; index <= 3087; index++) {
+        console.log("updating : ", index);
 
-          const element = rows[index];
+        const element = rows[index];
 
-          const assetType = element[0];
-          const assetName = element[1];
-          const modelnumber = element[2];
-          const brandname = element[3];
-          const serialnumber = element[4];
-          const outletcode = element[5];
-          const channel = element[6];
-          const tier = element[7];
-          const outletname = element[8];
-          const owner = element[9];
-          const phone = element[10];
-          const outletaddress = element[11];
-          const salesarea = element[12];
-          const dataset = element[13];
-          const barcode = element[14];
-          const contractor = element[15];
-          const date = element[16];
-          const q1 = element[17];
-          const q2 = element[18];
-          const q3 = element[19];
-          const q4 = element[20];
-          const CT = element[21];
-          const VStatus = element[22];
-          const remark = element[23];
-          const tradeverif = element[24];
+        const assetType = element[0] || null;
+        const assetName = element[1] || null;
+        const modelnumber = element[2] || null;
+        const brandname = element[3] || null;
+        const serialnumber = element[4] || null;
+        const outletcode = element[5] || null;
+        const channel = element[6] || null;
+        const tier = element[7] || null;
+        const outletname = element[8] || null;
+        const owner = element[9] || null;
+        const phone = element[10] || null;
+        const outletaddress = element[11] || null;
+        const salesarea = element[12] || null;
+        const dataset = element[13] || null;
+        const barcode = element[14] || null;
+        const contractor = element[15] || null;
+        const date = element[16] || null;
+        const q1 = element[17] || null;
+        const q2 = element[18] || null;
+        const q3 = element[19] || null;
+        const q4 = element[20 || null];
+        const CT = element[21] || null;
+        const VStatus = element[22] || null;
+        const remark = element[23] || null;
+        const tradeverif = element[24] || null;
 
-          records.push({
-            assetName,
-            assetType,
-            barcode,
-            model: modelnumber,
-            brandName: brandname,
-            serial: serialnumber,
-            outletCode: outletcode,
-            outlet: outletname,
-            owner,
-            phone,
-            chiller: contractor,
-            address: outletaddress,
-            salesArea: salesarea,
-            channel,
-            tier,
-            date,
-            CT,
-            dataset,
-            q1,
-            q2,
-            q3,
-            q4,
-            tradeverif,
-            remark,
-            VStatus,
-          });
-        }
-        addToDB();
-      } catch (error) {
-        console.log(error);
+        records.push({
+          assetName,
+          assetType,
+          barcode: remover(barcode),
+          model: modelnumber,
+          reference: barcode,
+          brandName: brandname,
+          serial: serialnumber,
+          outletCode: outletcode,
+          outlet: outletname,
+          owner,
+          phone,
+          chiller: contractor,
+          address: outletaddress,
+          salesArea: salesarea,
+          channel,
+          tier,
+          date,
+          CT,
+          dataset,
+          q1,
+          q2,
+          q3,
+          q4,
+          tradeverif,
+          remark,
+          VStatus,
+        });
       }
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
+      addToDB();
+      // console.log(records);
+    } catch (error) {
+      console.log(error.message);
+    }
+  });
 };

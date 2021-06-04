@@ -46,8 +46,11 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
     console.log("saving new data");
     setNotification({ status: "success", message: "Please Wait!!!" });
 
+    const length = barcodeNum.length;
+    const reference = barcodeNum.slice(0, length - 1);
+
     const data_ = {
-      barcode: barcodeNum,
+      reference,
       model,
       brand,
       serial,

@@ -433,9 +433,7 @@ const ViewRecord = ({ data, newscan }) => {
             </View>
             <View style={GlobalCss.input}>
               <TouchableOpacity style={GlobalCss.button} onPress={submitLog}>
-                <Text style={{ color: "#fff", fontWeight: "bold" }}>
-                  UPDATE
-                </Text>
+                <Text style={{ color: "#fff", fontWeight: "bold" }}>SAVE</Text>
               </TouchableOpacity>
             </View>
           </View>

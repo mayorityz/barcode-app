@@ -1,7 +1,5 @@
 import axios from "axios";
-const URL = "https://scanner-app-1.herokuapp.com";
-// const URL = "http://192.168.43.94:4500";
-// const URL = "http://172.16.2.135:4500";
+import URL from "./../constant";
 
 export const login = async (params) => {
   try {

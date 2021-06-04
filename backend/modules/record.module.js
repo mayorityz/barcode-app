@@ -2,6 +2,7 @@ const DB = require("mongoose");
 
 const recordSchema = new DB.Schema({
   barcode: String,
+  reference: String,
   model: String,
   brand: String,
   serial: String,

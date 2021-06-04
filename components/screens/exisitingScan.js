@@ -32,9 +32,10 @@ function ExistingScan() {
     //! add a preloader here
     setLoading(true);
     //! remove the last number.
-
+    let barcodeLength = data.length;
+    let orignalRef = data.slice(0, barcodeLength - 1);
     const data_ = await getRecord({
-      barcode: data,
+      barcode: orignalRef,
     });
 
     if (data_.status === "success") {
