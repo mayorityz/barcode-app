@@ -22,6 +22,7 @@ exports.addLog = (req, res) => {
     secondary,
     longitude,
     latitude,
+    remark,
   } = req.body;
 
   try {
@@ -46,6 +47,7 @@ exports.addLog = (req, res) => {
       secondary,
       longitude,
       latitude,
+      remark,
     });
 
     insertRecord.save((er, response) => {
@@ -64,5 +66,17 @@ exports.addLog = (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+exports.getLogs = (req, res) => {
+  try {
+    LOGMODEL.find({}, (error, data) => {
+      if (error)
+        res.status(200).json({ status: "failed", msg: "An Error Occured!" });
+      else res.status(200).json({ status: "success", msg: data });
+    });
+  } catch (error) {
+    res.status(200).json({ status: "failed", msg: "An Error Occured!" });
   }
 };

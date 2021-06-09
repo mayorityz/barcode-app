@@ -40,6 +40,8 @@ const ViewRecord = ({ data, newscan }) => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
+  const [remark, setRemark] = useState("");
+
   const primaryOption = (value) => {
     if (value === "Repair") {
       setStatus(true);
@@ -80,12 +82,12 @@ const ViewRecord = ({ data, newscan }) => {
       !outletCode ||
       !tier
     ) {
-      alert("All Fields Must Be Filled!!!");
+      alert("All Fields Except Reamrk Are REquired!!!");
       return;
     }
 
     if (!selectedLanguage) {
-      alert("You Must Add A Log");
+      alert("You Must Update Your GeoLocation!!!");
       return;
     }
 
@@ -110,6 +112,7 @@ const ViewRecord = ({ data, newscan }) => {
       secondary,
       longitude,
       latitude,
+      remark,
     };
     try {
       const data = await Logs(data_);
@@ -188,7 +191,7 @@ const ViewRecord = ({ data, newscan }) => {
   return (
     <>
       <Text style={{ ...GlobalCss.h1, color: "#fff", fontSize: 14 }}>
-        BARCODE REF. : {data.barcode}
+        BARCODE REF. : {data.reference}
       </Text>
       <ScrollView>
         <View style={GlobalCss.form}>
@@ -404,7 +407,49 @@ const ViewRecord = ({ data, newscan }) => {
                 label="Condenser Fan Motor replaced"
                 value="Condenser Fan Motor replaced"
               />
+              <Picker.Item
+                label="Broken Glass Door"
+                value="Broken Glass Door"
+              />
+
+              <Picker.Item label="Front Grill" value="Front Grill" />
+              <Picker.Item label="Shelf Clips" value="Shelf Clips" />
+              <Picker.Item label="Shelves" value="Shelves" />
+              <Picker.Item label="Consumables" value="Consumables" />
+              <Picker.Item
+                label="Thermostatic control module (carel)"
+                value="Thermostatic control module (carel)"
+              />
+              <Picker.Item
+                label="Stabilizer transformer"
+                value="Stabilizer transformer"
+              />
+              <Picker.Item label="Stabilizer" value="Stabilizer" />
+              <Picker.Item label="Dryer " value="Dryer " />
+              <Picker.Item label="Condenser" value="Condenser" />
+              <Picker.Item label="Evaporator" value="Evaporator" />
+              <Picker.Item label="Gasket rubber " value="Gasket rubber " />
+              <Picker.Item
+                label="Recomended for replacement"
+                value="Recomended for replacement"
+              />
+              <Picker.Item
+                label="Branding required"
+                value="Branding required"
+              />
             </Picker>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={GlobalCss.input}>
+              <Text style={GlobalCss.label}>Remark (optional) :</Text>
+              <TextInput
+                placeholder="Leave a remark ..."
+                style={GlobalCss.textField}
+                value={remark}
+                onChangeText={(text) => setRemark(text)}
+                multiline={true}
+              />
+            </View>
           </View>
           <View>
             <TouchableOpacity
