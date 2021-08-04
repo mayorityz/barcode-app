@@ -64,7 +64,7 @@ const ViewRecord = ({ data, newscan }) => {
 
   const submitLog = async () => {
     console.log("saving log!!!");
-
+    const userName = await AsyncStorage.getItem("username");
     if (
       !model ||
       !brand ||
@@ -75,14 +75,11 @@ const ViewRecord = ({ data, newscan }) => {
       !address ||
       !owner ||
       !salesArea ||
-      !assetType ||
-      !assetName ||
       !brandName ||
-      !channel ||
       !outletCode ||
       !tier
     ) {
-      alert("All Fields Except Reamrk Are REquired!!!");
+      alert("All Fields Except Remark Are REquired!!!");
       return;
     }
 
@@ -92,6 +89,7 @@ const ViewRecord = ({ data, newscan }) => {
     }
 
     setLoading(true);
+
     const data_ = {
       model,
       brand,
@@ -113,7 +111,9 @@ const ViewRecord = ({ data, newscan }) => {
       longitude,
       latitude,
       remark,
+      user: userName,
     };
+
     try {
       const data = await Logs(data_);
 
@@ -197,7 +197,7 @@ const ViewRecord = ({ data, newscan }) => {
         <View style={GlobalCss.form}>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Contractor :</Text>
+              <Text style={GlobalCss.label}>Contractor * :</Text>
               <TextInput
                 placeholder="Chiller Contract"
                 value={chiller}
@@ -206,7 +206,7 @@ const ViewRecord = ({ data, newscan }) => {
               />
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Model Number :</Text>
+              <Text style={GlobalCss.label}>Model Number *:</Text>
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Model Number"
@@ -217,7 +217,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Brand :</Text>
+              <Text style={GlobalCss.label}>Brand *:</Text>
               <TextInput
                 placeholder="Brand"
                 value={brand}
@@ -226,7 +226,7 @@ const ViewRecord = ({ data, newscan }) => {
               />
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Serial Number :</Text>
+              <Text style={GlobalCss.label}>Serial Number* :</Text>
               <TextInput
                 style={GlobalCss.field}
                 value={serial}
@@ -237,7 +237,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Outlet Name :</Text>
+              <Text style={GlobalCss.label}>Outlet Name * :</Text>
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Outlet's Name"
@@ -246,7 +246,7 @@ const ViewRecord = ({ data, newscan }) => {
               />
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Owner's Name :</Text>
+              <Text style={GlobalCss.label}>Owner's Name* :</Text>
               <TextInput
                 placeholder="Owner"
                 style={GlobalCss.field}
@@ -257,7 +257,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Phone Number :</Text>
+              <Text style={GlobalCss.label}>Phone Number* :</Text>
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Phone"
@@ -266,7 +266,7 @@ const ViewRecord = ({ data, newscan }) => {
               />
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Outlet Address :</Text>
+              <Text style={GlobalCss.label}>Outlet Address* :</Text>
               <TextInput
                 placeholder="Outlet Address"
                 value={address}
@@ -306,7 +306,7 @@ const ViewRecord = ({ data, newscan }) => {
               />
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Outlet Code :</Text>
+              <Text style={GlobalCss.label}>Outlet Code* :</Text>
               <TextInput
                 placeholder="Outlet Code"
                 value={outletCode}
@@ -317,7 +317,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Sales Area :</Text>
+              <Text style={GlobalCss.label}>Sales Area* :</Text>
               <TextInput
                 style={GlobalCss.field}
                 placeholder="Sales Area"
@@ -326,7 +326,7 @@ const ViewRecord = ({ data, newscan }) => {
               />
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Brand Name:</Text>
+              <Text style={GlobalCss.label}>Brand Name*:</Text>
               <TextInput
                 placeholder="Brand Name"
                 value={brandName}
@@ -337,13 +337,13 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Latitude :</Text>
+              <Text style={GlobalCss.label}>Latitude* :</Text>
               <Text style={{ fontSize: 30 }}>
                 {latitude || "Click Location"}
               </Text>
             </View>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Longitude :</Text>
+              <Text style={GlobalCss.label}>Longitude* :</Text>
               <Text style={{ fontSize: 30 }}>
                 {longitude || "Click Location"}
               </Text>
@@ -351,7 +351,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={GlobalCss.formGroup}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Tire :</Text>
+              <Text style={GlobalCss.label}>Tire* :</Text>
               <TextInput
                 placeholder="Tier"
                 style={GlobalCss.field}
@@ -441,7 +441,7 @@ const ViewRecord = ({ data, newscan }) => {
           </View>
           <View style={{ flex: 1 }}>
             <View style={GlobalCss.input}>
-              <Text style={GlobalCss.label}>Remark (optional) :</Text>
+              <Text style={GlobalCss.label}>Remark (optional)* :</Text>
               <TextInput
                 placeholder="Leave a remark ..."
                 style={GlobalCss.textField}

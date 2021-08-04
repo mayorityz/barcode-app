@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
   Text,
@@ -49,6 +49,8 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
     const length = barcodeNum.length;
     const reference = barcodeNum.slice(0, length - 1);
 
+    const userName = await AsyncStorage.getItem("username");
+
     const data_ = {
       reference,
       model,
@@ -68,6 +70,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
       tier,
       longitude,
       latitude,
+      user: userName,
     };
 
     if (
@@ -80,16 +83,13 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
       !address ||
       !owner ||
       !salesArea ||
-      !assetType ||
-      !assetName ||
       !brandName ||
-      !channel ||
       !outletCode ||
       !tier
     ) {
       setNotification({
         status: "error",
-        message: "All Fields Must Be Filled!!!",
+        message: "Fill Required Fields!!!",
       });
       return;
     }
@@ -190,7 +190,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
       <View style={GlobalCss.form}>
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>BarCode Number:</Text>
+            <Text style={GlobalCss.label}>BarCode Number*:</Text>
             <TextInput
               style={GlobalCss.field}
               defaultValue={barcodeNum}
@@ -198,7 +198,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
             />
           </View>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Model Number:</Text>
+            <Text style={GlobalCss.label}>Model Number*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={model}
@@ -208,7 +208,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
         </View>
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Asset Type</Text>
+            <Text style={GlobalCss.label}>Asset Type:</Text>
             <TextInput
               style={GlobalCss.field}
               value={assetType}
@@ -227,7 +227,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
         {/* 2 */}
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Brand Name:</Text>
+            <Text style={GlobalCss.label}>Brand Name*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={brandName}
@@ -235,7 +235,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
             />
           </View>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Outlet Code:</Text>
+            <Text style={GlobalCss.label}>Outlet Code*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={outletCode}
@@ -254,7 +254,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
             />
           </View>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Tier:</Text>
+            <Text style={GlobalCss.label}>Tier*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={tier}
@@ -265,7 +265,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
 
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Brand Number:</Text>
+            <Text style={GlobalCss.label}>Brand Number*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={brand}
@@ -273,7 +273,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
             />
           </View>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Serial Number:</Text>
+            <Text style={GlobalCss.label}>Serial Number*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={serial}
@@ -284,7 +284,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
 
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Outlet Name:</Text>
+            <Text style={GlobalCss.label}>Outlet Name*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={outlet}
@@ -292,7 +292,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
             />
           </View>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Owner's Name:</Text>
+            <Text style={GlobalCss.label}>Owner's Name*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={owner}
@@ -303,7 +303,7 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
 
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Phone Number:</Text>
+            <Text style={GlobalCss.label}>Phone Number*:</Text>
             <TextInput
               style={GlobalCss.field}
               value={phone}
@@ -341,13 +341,13 @@ const NewForm = ({ barcodeNum, scanned, rescan }) => {
 
         <View style={GlobalCss.formGroup}>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Longitude:</Text>
+            <Text style={GlobalCss.label}>Longitude *:</Text>
             <Text style={{ fontSize: 30 }}>
               {longitude || "Click Location"}
             </Text>
           </View>
           <View style={GlobalCss.input}>
-            <Text style={GlobalCss.label}>Latitude:</Text>
+            <Text style={GlobalCss.label}>Latitude *:</Text>
             <Text style={{ fontSize: 30 }}>{latitude || "Click Location"}</Text>
           </View>
         </View>

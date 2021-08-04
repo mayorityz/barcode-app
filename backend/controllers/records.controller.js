@@ -184,3 +184,23 @@ exports.upload = (req, res) => {
     }
   });
 };
+
+exports.queryDateRange = (req, res) => {
+  const { from, to } = req.body;
+
+  NewRecordModule.find(
+    {
+      date: {
+        $lte: to,
+        $gte: from,
+      },
+    },
+    (err, ress) => {
+      if (err) {
+        res.status(201).json({ status: "failed", message: err.message });
+      } else {
+        res.status(201).json({ status: "success", message: ress });
+      }
+    }
+  );
+};

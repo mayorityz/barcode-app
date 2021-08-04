@@ -23,6 +23,7 @@ exports.addLog = (req, res) => {
     longitude,
     latitude,
     remark,
+    user,
   } = req.body;
 
   try {
@@ -48,6 +49,7 @@ exports.addLog = (req, res) => {
       longitude,
       latitude,
       remark,
+      user,
     });
 
     insertRecord.save((er, response) => {

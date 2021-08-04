@@ -30,7 +30,8 @@ const LogSchema = new DB.Schema({
     type: Date,
     default: Date.now,
   },
-  remark: String
+  remark: String,
+  user: String,
 });
 
 const Logs = DB.model("logs", LogSchema);
